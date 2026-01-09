@@ -1,27 +1,27 @@
-# Contributor Covenant Code of Conduct
+# Código de Conducta - Contributor Covenant
 
-## Our Pledge
+## Nuestro Compromiso
 
-In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
+En el interés de fomentar un ambiente abierto y acogedor, nosotros, como contribuyentes y administradores, nos comprometemos a hacer de la participación en nuestro proyecto y nuestra comunidad una experiencia libre de acoso para todos, independientemente de la edad, dimensión corporal, discapacidad, etnia, características sexuales, identidad y expresión de género, nivel de experiencia, educación, estatus socioeconómico, nacionalidad, apariencia personal, raza, religión o identidad y orientación sexual.
 
-## Our Standards
+## Nuestros Estándares
 
-Examples of behavior that contributes to creating a positive environment include:
+Ejemplos de comportamiento que contribuyen a crear un ambiente positivo incluyen:
 
-- Using welcoming and inclusive language
-- Being respectful of differing viewpoints and experiences
-- Gracefully accepting constructive criticism
-- Focusing on what is best for the community
-- Showing empathy towards other community members
+- Uso de lenguaje bienvenido e inclusivo
+- Respeto por los diferentes puntos de vista y experiencias
+- Aceptación graciosas de críticas constructivas
+- Enfoque en lo que es mejor para la comunidad
+- Mostrar empatía hacia otros miembros de la comunidad
 
-Examples of unacceptable behavior by participants include:
+Ejemplos de comportamiento inaceptable por parte de los participantes incluyen:
 
-- The use of sexualized language or imagery and unwelcome sexual attention or advances
-- Trolling, insulting/derogatory comments, and personal or political attacks
-- Public or private harassment
-- Publishing others' private information, such as a physical or electronic address, without explicit permission
-- Other conduct which could reasonably be considered inappropriate in a professional setting
+- El uso de lenguaje o imágenes sexualizadas y atención sexual no deseada
+- Trolling, comentarios insultantes/despectivos y ataques personales o políticos
+- Acoso público o privado
+- Publicar información privada de otros, como una dirección física o electrónica, sin permiso explícito
+- Otras conductas que razonablemente podrían considerarse inapropiadas en un entorno profesional
 
-## Enforcement
+## Cumplimiento
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident.
+Las instancias de comportamiento abusivo, acosador o inaceptable pueden ser reportadas contactando al equipo del proyecto en **jpmendozahn1@gmail.com**. Todas las quejas serán revisadas e investigadas y resultarán en una respuesta que se considere necesaria y apropiada a las circunstancias. El equipo del proyecto está obligado a mantener la confidencialidad con respecto al reportante de un incidente.

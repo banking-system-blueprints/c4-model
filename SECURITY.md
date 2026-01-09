@@ -1,20 +1,20 @@
-# Security Policy
+# Política de Seguridad
 
-## Supported Versions
+## Versiones Soportadas
 
-Use this section to tell people about which versions of your project are currently being supported with security updates.
+Utilice esta sección para informar a los usuarios sobre qué versiones de su proyecto reciben actualmente actualizaciones de seguridad.
 
-| Version | Supported          |
+| Versión | Soportada          |
 | ------- | ------------------ |
 | 1.0.x   | :white_check_mark: |
 | < 1.0   | :x:                |
 
-## Reporting a Vulnerability
+## Reporte de Vulnerabilidades
 
-We take the security of this project seriously. If you discover a security vulnerability, please follow these steps:
+Damos gran importancia a la seguridad de este proyecto. Si descubre una vulnerabilidad de seguridad, por favor siga estos pasos:
 
-1.  **Do not** create a public issue.
-2.  Send an email to **security@banking-blueprints.dev** (or the repository maintainers) describing the vulnerability.
-3.  Include a proof of concept or detailed reproduction steps.
+1.  **No cree** un issue público.
+2.  Envíe un correo electrónico a **jpmendozahn1@gmail.com** describiendo la vulnerabilidad.
+3.  Incluya una prueba de concepto o pasos detallados para reproducirla.
 
-We will review the report and respond within 48 hours. Validated vulnerabilities will be patched in the next release, and a security advisory will be published.
+Revisaremos el reporte y responderemos dentro de las 48 horas siguientes. Las vulnerabilidades validadas serán parcheadas en la próxima versión y se publicará un aviso de seguridad.

@@ -1,24 +1,24 @@
-# Contributing to Banking System Blueprints
+# Contribuir a Banking System Blueprints
 
-First off, thanks for taking the time to contribute! 🎉
+¡Gracias por tomarte el tiempo de contribuir! 🎉
 
-## How to Contribute
+## Cómo Contribuir
 
-1.  **Fork the repository** on GitHub.
-2.  **Clone** your fork locally.
-3.  Create a new **feature branch** (`git checkout -b feature/amazing-feature`).
-4.  Commit your changes following the [Conventional Commits](https://www.conventionalcommits.org/) specification.
-5.  Push to your branch.
-6.  Open a **Pull Request** targeting the `main` branch.
+1.  **Haz un Fork** del repositorio en GitHub.
+2.  **Clona** tu fork localmente.
+3.  Crea una nueva **rama para tu funcionalidad** (`git checkout -b feature/funcionalidad-increible`).
+4.  Haz commit de tus cambios siguiendo la especificación de [Conventional Commits](https://www.conventionalcommits.org/es/v1.0.0/).
+5.  Haz Push a tu rama.
+6.  Abre un **Pull Request** apuntando a la rama `main`.
 
-## Pull Request Guidelines
+## Guías para Pull Requests
 
-- Ensure your code matches the project's coding standards.
-- Update documentation as needed.
-- The PR title should be descriptive.
-- Wait for code review and address any feedback.
+- Asegúrate de que tu código cumpla con los estándares del proyecto.
+- Actualiza la documentación según sea necesario.
+- El título del PR debe ser descriptivo.
+- Espera la revisión del código y atiende cualquier comentario.
 
-## Code Style
+## Estilo de Código
 
-- This project uses `LikeC4` for architecture diagrams. Ensure syntax validity before committing.
-- Keep diagrams clean and legible.
+- Este proyecto utiliza `LikeC4` para diagramas de arquitectura. Asegúrate de que la sintaxis sea válida antes de hacer commit.
+- Mantén los diagramas limpios y legibles.
