@@ -1,0 +1,89 @@
+views {
+
+    view landscape {
+        title "00. Panorama del Sistema Bancario"
+        description "Vista de nivel alto (Landscape) del ecosistema. Muestra los actores principales y los sistemas a gran escala."
+
+        include element.kind = actor
+        include element.kind = system
+        include element.kind = external_system
+    }
+
+    view index of coreDigital {
+        title "01. Contexto - Ecosistema Bancario"
+        description "Diagrama de Contexto del Core Bancario Digital y sus integraciones externas."
+        include *
+        include coreTrad
+        include openFinance
+        include paymentsPlatform
+        include fraudSystem
+        include customer_retail
+        include tpp
+        exclude cloud
+    }
+
+    view core_digital_containers of coreDigital {
+        title "02. Contenedores - Core Digital"
+        description "Arquitectura interna del Core Digital: Microservicios, BFFs y Buses de Eventos."
+        include *
+        include apiGateway
+        include authService
+        include transactionService
+        include accountService
+        include eventBus
+        include transactionDB
+        include accountDB
+    }
+
+    view open_finance_containers of openFinance {
+        title "03. Contenedores - Open Finance Gateway"
+        description "Detalle del Gateway de Open Finance, incluyendo servicios de consentimiento y tokens (FAPI)."
+        include *
+        include publicGateway
+        include consentService
+        include tokenService
+        include tpp
+    }
+
+    view payments_platform_containers of paymentsPlatform {
+        title "04. Contenedores - Plataforma de Pagos"
+        description "Componentes de la Plataforma de Pagos: Motores de enrutamiento y conectores con redes internacionales."
+        include *
+        include processingEngine
+        include visaConnector
+        include achConnector
+        include legacyAdapter
+        include paymentsBus
+    }
+
+    view transaction_service_components of coreDigital.transactionService {
+        title "05. Componentes - Servicio de Transacciones"
+        description "Diseño interno del Servicio de Transacciones, implementando el patrón Saga y control de idempotencia."
+        include *
+        include coreDigital.accountService
+        include fraudSystem
+    }
+
+    view fraud_system_components of fraudSystem {
+        title "06. Componentes - Sistema de Fraude"
+        description "Interior del motor de fraude: Reglas Drools, modelos ML y almacenamiento de features."
+        include *
+        include coreDigital.transactionService
+    }
+
+    view payment_flow {
+        title "07. Flujo de Transferencia (Simplificado)"
+        description "Recorrido de una transacción típica desde el cliente hasta el procesamiento y validación de fraude."
+
+        include customer_retail
+        include coreDigital.bffMobile
+        include coreDigital.apiGateway
+        include coreDigital.transactionService
+        include fraudSystem.fraudApi
+        include paymentsPlatform.processingEngine
+    
+        // Force specific ordering or focus if needed, 
+        // mainly relying on 'include' to show the relevant path
+    }
+
+}

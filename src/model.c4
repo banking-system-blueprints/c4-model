@@ -1,0 +1,297 @@
+model {
+    // ACTORS
+    // ACTORS
+    actor customer_retail "Cliente Retail" {
+        description "Persona física que accede a la banca a través de canales digitales (App/Web)."
+    }
+    actor customer_corporate "Cliente Corporativo" {
+        description "Empresas usuarias de servicios de tesorería y gestión masiva."
+    }
+    actor tpp "Tercero Autorizado (TPP)" {
+        description "Fintech o agregador externo certificado para consumir APIs Open Finance."
+    }
+    actor regulator "Regulador Financiero" {
+        description "Entidad gubernamental que supervisa el cumplimiento normativo."
+    }
+    actor fraud_analyst "Analista de Fraudes" {
+        description "Especialista encargado de revisar alertas y casos sospechosos."
+    }
+    actor employee "Empleado Banco" {
+        description "Personal operativo de back-office y sucursales."
+    }
+    actor tpp_developer "Desarrollador TPP" {
+        description "Personal técnico de terceros que integra con el Sandbox."
+    }
+    actor compliance_officer "Oficial de Cumplimiento" {
+        description "Responsable de auditoría y monitoreo de seguridad."
+    }
+    actor operador_pagos "Operador de Pagos" {
+        description "Supervisor de la plataforma de transacciones y conectores."
+    }
+
+    // EXTERNAL SYSTEMS
+    external_system coreTrad "Core Bancario Tradicional" {
+        description "Sistema legacy (Mainframe/AS400). Sistema de registro."
+        style { icon tech:ibm }
+    }
+    external_system visa "Red Visa" {
+        description "Procesamiento de tarjetas Visa"
+    }
+    external_system mastercard "Red Mastercard" {
+        description "Procesamiento de tarjetas Mastercard"
+    }
+    external_system clearing "Cámara de Compensación" {
+        description "ACH/SPEI, clearing interbancario"
+    }
+    external_system swift "Red SWIFT" {
+        description "Transferencias internacionales"
+    }
+    external_system provider_services "Proveedores de Servicios" {
+        description "Burós de crédito, KYC, datos de mercado"
+    }
+    external_system cloud "Proveedor Cloud" {
+        description "AWS/Azure infrastructure"
+        style { icon tech:aws }
+    }
+
+    // SYSTEM: CORE DIGITAL
+    system coreDigital "Core Bancario Digital" {
+        description "Microservicios cloud-native para productos digitales"
+
+        container apiGateway "API Gateway" {
+            technology "Kong"
+            description "Entrada unificada para canales digitales. Gestiona ruteo, rate limiting y seguridad perimetral."
+            style {
+                color amber
+                icon tech:kong
+            }
+        }
+        container authService "Servicio Autenticación" {
+            technology "Keycloak"
+            description "Identity Provider, OAuth2/OIDC, SSO."
+            style {
+                color red
+                icon tech:java
+            }
+        }
+        container accountService "Servicio de Cuentas" {
+            technology "Spring Boot"
+            description "Gestión de cuentas y saldos."
+            style { icon tech:spring }
+            component accountValidator "Validador de Cuentas"
+        }
+        container transactionService "Servicio de Transacciones" {
+            technology "Spring Boot"
+            description "Orquestador de transferencias y pagos (Saga)."
+            style { icon tech:spring }
+
+            component transferController "Controlador de Transferencias"
+            component idempotencyGuard "Guarda de Idempotencia"
+            component transactionOrchestrator "Orquestador de Transacciones"
+            component sagaCoordinator "Coordinador Saga"
+            component fraudAdapter "Adaptador de Fraudes"
+            component ledgerWriter "Escritor de Libro Mayor"
+
+            transferController -> idempotencyGuard "Verifica llave"
+            transferController -> transactionOrchestrator "Inicia Saga"
+            transactionOrchestrator -> sagaCoordinator "Registra estado"
+            transactionOrchestrator -> fraudAdapter "Consulta Score"
+            transactionOrchestrator -> ledgerWriter "Reserva/Commit"
+            ledgerWriter -> transactionDB "Escribe eventos"
+        }
+        container productService "Servicio de Productos" {
+            technology "Spring Boot"
+            description "Catálogo y contratación."
+        }
+        container customerService "Servicio de Clientes" {
+            technology "Spring Boot"
+            description "Customer 360, KYC."
+            component limitChecker "Verificador de Límites"
+        }
+        container notificationService "Servicio de Notificaciones" {
+            technology "Node.js"
+            description "Envío multicanal (Push, Email, SMS)."
+        }
+        container bffWeb "BFF Web" {
+            technology "Node.js"
+            description "Backend for Frontend Web"
+        }
+        container bffMobile "BFF Mobile" {
+            technology "Node.js"
+            description "Backend for Frontend Mobile"
+        }
+        container eventBus "Bus de Eventos" {
+            technology "Apache Kafka"
+            description "Backbone de eventos de dominio"
+            style { icon tech:kafka }
+        }
+    
+        // Databases
+        database accountDB "BD Cuentas" { technology "PostgreSQL"; style { icon tech:postgresql } }
+        database transactionDB "BD Transacciones" { technology "PostgreSQL"; style { icon tech:postgresql } }
+        database productDB "BD Productos" { technology "PostgreSQL"; style { icon tech:postgresql } }
+        database customerDB "BD Clientes" { technology "MongoDB"; style { icon tech:mongodb } }
+        database cache "Cache Distribuido" { technology "Redis"; style { icon tech:redis } }
+
+        // Relationships Internal
+        apiGateway -> authService "Valida tokens"
+        apiGateway -> accountService "Rutea requests"
+        apiGateway -> transactionService "Rutea requests"
+
+        bffWeb -> apiGateway "Consume APIs"
+        bffMobile -> apiGateway "Consume APIs"
+
+        transactionService -> eventBus "Publica eventos"
+        accountService -> eventBus "Publica eventos"
+        notificationService -> eventBus "Consume eventos"
+
+        authService -> cache "Sesiones"
+        transactionService -> transactionDB "Persiste eventos"
+        transactionService -> cache "Idempotencia"
+        accountService -> accountDB "Persiste cuentas"
+
+        // Relationships moved inside containers
+    }
+
+    // SYSTEM: OPEN FINANCE
+    system openFinance "Open Finance Gateway" {
+        description "Exposición segura de APIs a terceros (PSD2)"
+
+        container publicGateway "Gateway Público" {
+            technology "Kong Enterprise"
+            description "Entrada mTLS para TPPs"
+            style { color amber }
+        }
+        container consentService "Servicio Consentimientos" {
+            technology "Spring Boot"
+            description "Administra el ciclo de vida (creación, revocación, expiración) de los consentimientos PSD2."
+        }
+        container tokenService "Servicio Tokens" {
+            technology "Node.js"
+            description "Validación FAPI, tokens certificados"
+        }
+        container sandbox "Sandbox Environment" {
+            technology "Kong + Mocks"
+            description "Ambiente de certificación"
+        }
+        container analytics "Colector de Analítica" {
+            technology "Node.js + InfluxDB"
+            description "Recolecta métricas de uso de APIs para monetización y monitoreo."
+        }
+
+        database consentDB "BD Consentimientos" { technology "PostgreSQL" }
+        database tppRegistry "BD TPPs" { technology "PostgreSQL" }
+        database redis "Cache" { technology "Redis" }
+
+        publicGateway -> tokenService "Introspección FAPI"
+        publicGateway -> consentService "Verifica scopes"
+        publicGateway -> analytics "Log metrics"
+
+        tokenService -> consentDB "Valida permisos"
+        tokenService -> redis "Blacklist/Cache"
+        consentService -> consentDB "Persiste"
+    }
+
+    // SYSTEM: PAYMENTS PLATFORM
+    system paymentsPlatform "Plataforma de Pagos" {
+        description "Hub de procesamiento de pagos"
+
+        container processingEngine "Motor de Procesamiento" {
+            technology "Java 21"
+            description "Orquestador central. Gestiona el ciclo de vida del pago, estados y reintentos."
+        }
+        container routingEngine "Motor Enrutamiento" {
+            technology "Spring Boot"
+            description "Determina la ruta óptima post-procesamiento (costo, disponibilidad) para cada transacción."
+        }
+        container reconciliationEngine "Motor Reconciliación" {
+            technology "Python + ML"
+        }
+
+        container visaConnector "Conector Visa" { technology "Java, ISO 8583" }
+        container mcConnector "Conector Mastercard" { technology "Java, ISO 8583" }
+        container achConnector "Conector ACH" { technology "Spring Boot" }
+        container swiftConnector "Conector SWIFT" { technology "Java" }
+        container legacyAdapter "Adaptador Legacy" { technology "Java, MQ" }
+
+        database paymentDB "BD Pagos" { technology "PostgreSQL" }
+        container paymentsBus "Pagos Kafka" { technology "Kafka" }
+
+        processingEngine -> routingEngine "Obtiene Ruta"
+        processingEngine -> visaConnector "Ejecuta Tx Tarjeta"
+        processingEngine -> mcConnector "Ejecuta Tx Tarjeta"
+        processingEngine -> achConnector "Encola Lote (Batch)"
+        processingEngine -> swiftConnector "Ejecuta Tx Internacional"
+        processingEngine -> legacyAdapter "Ejecuta Tx Interna"
+
+        processingEngine -> paymentDB "Guarda Estado"
+        processingEngine -> paymentsBus "Publica Eventos"
+
+        visaConnector -> paymentsBus "Confirma Tx"
+        reconciliationEngine -> paymentDB "Concilia Tx"
+    }
+
+    // SYSTEM: FRAUD PREVENTION
+    system fraudSystem "Sistema Prevención Fraudes" {
+        description "Scoring en tiempo real (Reglas + ML)"
+
+        component fraudApi "API de Fraudes" {
+            technology "FastAPI"
+            description "Interfaz síncrona para evaluación de riesgo en tiempo real (<50ms)."
+        }
+        component rulesEngine "Motor de Reglas" {
+            technology "Drools"
+            description "Ejecuta reglas deterministas (listas negras, límites de velocidad)."
+        }
+        component mlEngine "Motor Inferencia ML" {
+            technology "TensorFlow Serving"
+            description "Inferencia de modelos de ML (Ensemble) para scoring probabilístico."
+        }
+        component featureStore "Almacén de Características" {
+            technology "Redis"
+            description "Features tiempo real"
+        }
+        component caseManager "Gestor de Casos" {
+            description "Gestión casos manuales"
+        }
+
+        database fraudDB "Historical DB" { technology "ClickHouse/Postgres" }
+
+        fraudApi -> rulesEngine "Evalúa reglas"
+        fraudApi -> mlEngine "Predice score"
+        fraudApi -> featureStore "Obtiene contexto"
+        fraudApi -> fraudDB "Registra decisión"
+
+        caseManager -> fraud_analyst "Asigna caso"
+    }
+
+    // GLOBAL RELATIONSHIPS
+    customer_retail -> coreDigital.bffMobile "Usa App"
+    customer_retail -> coreDigital.bffWeb "Usa Web"
+    customer_corporate -> coreDigital.bffWeb "Usa Banca Corporativa"
+
+    tpp -> openFinance.publicGateway "Consume APIs"
+    tpp_developer -> openFinance.sandbox "Certifica integración"
+
+    coreDigital.transactionService -> fraudSystem.fraudApi "Puntúa Transacción (Score Sync)"
+    coreDigital.transactionService -> coreDigital.accountService "Valida y Reserva"
+    coreDigital.transactionService -> paymentsPlatform.processingEngine "Ejecuta Pago"
+
+    coreDigital.accountService -> coreTrad "Sincroniza Cuentas Legacy"
+
+    paymentsPlatform.processingEngine -> fraudSystem.fraudApi "Verifica Fraude (Ad-hoc)"
+    paymentsPlatform.processingEngine -> coreDigital "Notifica Completitud"
+
+    openFinance.publicGateway -> coreDigital.apiGateway "Proxy Petición"
+
+    paymentsPlatform.visaConnector -> visa "ISO 8583"
+    paymentsPlatform.mcConnector -> mastercard "ISO 8583"
+    paymentsPlatform.achConnector -> clearing "Archivos Lote (Batch)"
+    paymentsPlatform.swiftConnector -> swift "MT103"
+    paymentsPlatform.legacyAdapter -> coreTrad "MQ Series"
+
+    coreDigital -> cloud "Desplegado en"
+
+    fraud_analyst -> fraudSystem.caseManager "Revisa Casos"
+    regulator -> coreDigital "Audita"
+}

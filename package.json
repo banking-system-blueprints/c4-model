@@ -1,0 +1,20 @@
+{
+  "name": "likec4-project",
+  "version": "1.0.0",
+  "description": "LikeC4 Architecture Project",
+  "type": "module",
+  "scripts": {
+    "start": "likec4 start",
+    "dev": "likec4 start",
+    "build": "likec4 build",
+    "export:png": "likec4 export png -o ./dist/png",
+    "export:json": "likec4 export json -o ./dist/likec4.json",
+    "preview": "likec4 preview -o ./dist"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "likec4": "latest",
+    "typescript": "^5.0.0",
+    "vitest": "latest"
+  }
+}

@@ -1,0 +1,28 @@
+specification {
+    // Primary Level (Context)
+    element actor { style { shape person; color primary } }
+    element system { style { shape rectangle; color indigo } }
+    element external_system { style { shape rectangle; color muted } }
+
+    // Secondary Level (Container)
+    element container { style { shape rectangle; color green } }
+    element database { style { shape cylinder; color slate } }
+    
+    // Tertiary Level (Component)
+    element component { style { shape rectangle; color amber } }
+    
+    // Specialized - Frontends
+    element mobile { style { shape mobile; color blue } }
+    element browser { style { shape browser; color blue } }
+
+    tag infrastructure
+    tag microservice
+    tag database
+    tag storage
+    tag queue
+    tag security
+    tag finance
+    tag legacy
+    tag digital
+    tag external
+}
