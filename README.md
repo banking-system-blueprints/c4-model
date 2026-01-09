@@ -6,6 +6,10 @@ Este repositorio contiene la arquitectura de referencia para una plataforma banc
 
 El objetivo es proporcionar un conjunto de "planos" arquitectónicos (blueprints) que modelen la complejidad técnica de la transformación digital bancaria, sirviendo como recurso para arquitectos de software, ingenieros de integración y equipos técnicos en el sector financiero.
 
+> [!TIP]
+> **Diagramas de Modelo C4 Actualizados**: Acceda al entorno interactivo profesional para visualizar la arquitectura en detalle:
+> 🌐 [**banking-system-blueprints.onrender.com**](https://banking-system-blueprints.onrender.com/)
+
 > [!IMPORTANT]
 > **Diseño de Solución Completo**: El documento detallado con el diseño de solución aplicado se encuentra disponible en PDF:
 > 📄 [**Diseño de Solución.pdf**](docs/Diseño%20de%20Solución.pdf)
@@ -21,7 +25,9 @@ Este modelo propone una arquitectura de referencia agnóstica de proveedor, cent
 
 ## 🚀 Despliegue y Ejecución
 
-El proyecto está contenerizado para facilitar su despliegue en cualquier entorno compatible con OCI (Docker, K8s).
+Puede consultar los diagramas desplegados directamente en: **https://banking-system-blueprints.onrender.com/**
+
+Alternativamente, el proyecto está contenerizado para facilitar su despliegue local o en cualquier entorno compatible con OCI (Docker, K8s).
 
 ### Opción A: Ejecución con Docker (Recomendado)
 
